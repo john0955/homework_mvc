@@ -1,0 +1,116 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>demo</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+       
+
+    <script language="javascript">
+        function bt_update(sn,cname,zage,birthday) {
+            $("#sn").val(sn);
+            $("#cname").val(cname);
+            $("#zage").val(zage);
+            $("#birthday").val(birthday);
+            $("#go").val("修改帳號");
+        }
+
+        function bt_delete(sn) {
+           
+            var input = $("<input>").attr("type", "hidden").attr("name", "sn").val(sn);
+            var input2 = $("<input>").attr("type", "hidden").attr("name", "go").val("刪除帳號");
+            $("#form1").append($(input)).append(input2);
+            $("#form1").submit();
+        }
+    </script>
+</head>
+<body>
+    <div>
+
+        @using (Html.BeginForm("demo", "home", FormMethod.Post,new { name = "form1", id = "form1"}))
+        {
+
+            <table>
+
+                <tr>
+
+                    <td>姓名:</td>
+                    <td>
+                        <input type="hidden" id="sn" name="sn" />
+                        <input type="text" id="cname" name="cname" />
+                    </td>
+                </tr>
+
+                <tr>
+
+                    <td>年齡:</td>
+                    <td><input type="text" id="zage" name="zage" /></td>
+                </tr>
+
+                <tr>
+
+                    <td>生日:</td>
+                    <td><input type="text" id="birthday" name="birthday" /></td>
+                </tr>
+
+            </table>
+
+            <input type="submit" id="go" value="建立帳號" name="go" />
+
+
+
+
+            if (ViewBag.dt != null)
+            {
+
+
+
+                <table border="1" id="list1">
+                    <tr>
+                        <th>姓名</th>
+                        <th>年齡</th>
+                        <th>生日</th>
+                        <th colspan="2"></th>
+                    </tr>
+
+                    @foreach (var rs in ViewBag.dt)
+                    {
+                        <tr>                            
+
+                            <td>
+                           
+                            @rs["cname"].ToString()
+                            
+                            </td>
+                            <td>@rs["zage"].ToString()</td>
+                            <td>@rs["birthday"].ToString()</td>
+                            <td><input type="button" id="bt_update_@rs["sn"].ToString()" 
+                                       value="修改" 
+                                       onclick="bt_update(
+                                      '@rs["sn"].ToString()',
+                                      '@rs["cname"].ToString()',
+                                      '@rs["zage"].ToString()',
+                                    '@rs["birthday"].ToString()')" /></td>
+                            <td><input type="button" id="bt_delete_@rs["sn"].ToString()"
+                                       value="刪除" onclick="bt_delete(
+                          '@rs["sn"]'
+)" /></td>
+                        </tr>
+                    }
+                </table>
+
+
+            }
+
+
+        }
+
+    </div>
+</body>
+</html>
